@@ -4,19 +4,17 @@
 .rcw-conversation-container {
 
   .rcw-header {
-    background-color: $turqois-1;
+    background-color: $brand-1;
     border-radius: 10px 10px 0 0;
     color: $white;
     display: flex;
     flex-direction: column;
-    text-align: center;
-    padding: 15px 0 25px;
+    padding: 1rem;
   }
 
   .rcw-title {
     font-size: 24px;
     margin: 0;
-    padding: 15px 0;
   }
 
   .rcw-close-button {

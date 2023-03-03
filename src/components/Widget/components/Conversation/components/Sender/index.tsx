@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import { GlobalState } from 'src/store/types';
 
@@ -24,7 +25,7 @@ type Props = {
 
 function Sender({ sendMessage, placeholder, disabledInput, autofocus, onTextInputChange, buttonAlt, onPressEmoji, onChangeSize }: Props, ref) {
   const showChat = useSelector((state: GlobalState) => state.behavior.showChat);
-  const inputRef = useRef<HTMLDivElement>(null!);
+  const inputRef = useRef<HTMLTextAreaElement>(null!);
   const refContainer = useRef<HTMLDivElement>(null);
   const [enter, setEnter]= useState(false)
   const [firefox, setFirefox] = useState(false);
@@ -33,35 +34,16 @@ function Sender({ sendMessage, placeholder, disabledInput, autofocus, onTextInpu
   useEffect(() => { if (showChat && autofocus) inputRef.current?.focus(); }, [showChat]);
   useEffect(() => { setFirefox(isFirefox())}, [])
 
-  useImperativeHandle(ref, () => {
-    return {
-      onSelectEmoji: handlerOnSelectEmoji,
-    };
-  });
-
   const handlerOnChange = (event) => {
     onTextInputChange && onTextInputChange(event)
   }
 
   const handlerSendMessage = () => {
     const el = inputRef.current;
-    if(el.innerHTML) {
-      sendMessage(el.innerText);
-      el.innerHTML = ''
+    if(el.value) {
+      sendMessage(el.value);
+      el.value = '';
     }
-  }
-
-  const handlerOnSelectEmoji = (emoji) => {
-    const el = inputRef.current;
-    const { start, end } = getSelection(el)
-    if(el.innerHTML) {
-      const firstPart = el.innerHTML.substring(0, start);
-      const secondPart = el.innerHTML.substring(end);
-      el.innerHTML = (`${firstPart}${emoji.native}${secondPart}`)
-    } else {
-      el.innerHTML = emoji.native
-    }
-    updateCaret(el, start, emoji.native.length)
   }
 
   const handlerOnKeyPress = (event) => {
@@ -78,71 +60,23 @@ function Sender({ sendMessage, placeholder, disabledInput, autofocus, onTextInpu
     }
   }
 
-  // TODO use a context for checkSize and toggle picker
-  const checkSize = () => {
-    const senderEl = refContainer.current
-    if(senderEl && height !== senderEl.clientHeight) {
-      const {clientHeight} = senderEl;
-      setHeight(clientHeight)
-      onChangeSize(clientHeight ? clientHeight -1 : 0)
-    }
-  }
-
-  const handlerOnKeyUp = (event) => {
-    const el = inputRef.current;
-    if(!el) return true;
-    // Conditions need for firefox
-    if(firefox && event.key === 'Backspace') {
-      if(el.innerHTML.length === 1 && enter) {
-        el.innerHTML = '';
-        setEnter(false);
-      }
-      else if(brRegex.test(el.innerHTML)){
-        el.innerHTML = el.innerHTML.replace(brRegex, '');
-      }
-    }
-    checkSize();
-  }
-
-  const handlerOnKeyDown= (event) => {
-    const el = inputRef.current;
-    
-    if( event.key === 'Backspace' && el){
-      const caretPosition = getCaretIndex(inputRef.current);
-      const character = el.innerHTML.charAt(caretPosition - 1);
-      if(character === "\n") {
-        event.preventDefault();
-        event.stopPropagation();
-        el.innerHTML = (el.innerHTML.substring(0, caretPosition - 1) + el.innerHTML.substring(caretPosition))
-        updateCaret(el, caretPosition, -1)
-      }
-    }
-  }
-
-  const handlerPressEmoji = () => {
-    onPressEmoji();
-    checkSize();
-  }
-
   return (
     <div ref={refContainer} className="rcw-sender">
       <div className={cn('rcw-new-message', {
           'rcw-message-disable': disabledInput,
         })
       }>
-        <div
+
+        <TextareaAutosize
+          ref={inputRef}
           spellCheck
           className="rcw-input"
-          role="textbox"
-          contentEditable={!disabledInput} 
-          ref={inputRef}
           placeholder={placeholder}
           onInput={handlerOnChange}
           onKeyPress={handlerOnKeyPress}
-          onKeyUp={handlerOnKeyUp}
-          onKeyDown={handlerOnKeyDown}
+          maxRows={5}
         />
-        
+
       </div>
       <button type="submit" className="rcw-send" onClick={handlerSendMessage}>
         <img src={send} className="rcw-send-icon" alt={buttonAlt} />

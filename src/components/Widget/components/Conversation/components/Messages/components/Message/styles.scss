@@ -15,6 +15,7 @@
 .rcw-timestamp {
   font-size: 10px;
   margin-top: 5px;
+  color: $grey-0;
 }
 
 .rcw-client {
@@ -23,7 +24,7 @@
   margin-left: auto;
 
   .rcw-message-text {
-    @include message-bubble($turqois-2);
+    @include message-bubble($brand-2, $brand-message-text-color);
 
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -40,7 +41,7 @@
   align-items: flex-start;
 
   .rcw-message-text {
-    @include message-bubble($grey-2);
+    @include message-bubble($grey-2, black);
   }
 }
 

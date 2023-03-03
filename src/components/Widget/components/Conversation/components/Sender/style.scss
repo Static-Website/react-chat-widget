@@ -1,7 +1,7 @@
 @import 'variables/colors';
 
 .rcw-sender {
-  align-items: flex-end;
+  align-items: center;
   background-color: $grey-2;
   border-radius: 0 0 10px 10px;
   display: flex;
@@ -18,12 +18,12 @@
 }
 
 .rcw-new-message {
-  background-color: $white;
+  // background-color: $white;
   border: 0;
   border-radius: 5px;
   padding: 10px 5px;
   resize: none;
-  width: calc(100% - 75px);
+  flex-grow: 1;
 
   &:focus {
     outline: none;
@@ -35,6 +35,12 @@
 }
 
 .rcw-input {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  resize: none;
+  font-family: inherit;
+  font-size: inherit;
   display: block;
   height: 100%;
   line-height: 20px;
@@ -60,7 +66,7 @@
   cursor: pointer;
 
   .rcw-send-icon {
-    height: 25px;
+    height: 1.5rem;
   }
 }
 
