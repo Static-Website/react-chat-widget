@@ -2,11 +2,9 @@
 // Project: <https://github.com/Wolox/react-chat-widget>
 // Definitions by: Martín Callegari <https://github.com/mcallegari10>
 
-import * as React from 'react';
+import { ElementType } from 'react';
 
-import { Props } from './src/index';
-
-declare const Widget: React.FC<Props>;
+declare const Widget: ElementType;
 
 export function addUserMessage(text: string): void;
 export function addUserMessage(text: string, id: string): void;
