@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 
-import { Props } from './lib/index';
+import { Props } from './src/index';
 
 declare const Widget: React.FC<Props>;
 
