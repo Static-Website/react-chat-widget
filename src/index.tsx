@@ -6,7 +6,7 @@ import store from  './store';
 
 import { AnyFunction } from './utils/types';
 
-type Props = {
+export type Props = {
   handleNewUserMessage: AnyFunction;
   handleQuickButtonClicked?: AnyFunction;
   title?: string;

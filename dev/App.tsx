@@ -1,7 +1,6 @@
 import { Component } from 'react';
 
-import { Widget, addResponseMessage, setQuickButtons, toggleMsgLoader, addLinkSnippet } from '../index';
-import { addUserMessage } from '..';
+import { Widget, addUserMessage, addResponseMessage, setQuickButtons, toggleMsgLoader, addLinkSnippet } from '../index';
 
 export default class App extends Component {
   componentDidMount() {
@@ -36,17 +35,19 @@ export default class App extends Component {
     return true;
   }
 
+  widgetProps = {
+    title:"Bienvenido",
+    subtitle:"Asistente virtual",
+    senderPlaceHolder:"Escribe aquí ...",
+    handleNewUserMessage: this.handleNewUserMessage,
+    handleQuickButtonClicked: this.handleQuickButtonClicked,
+    handleSubmit: this.handleSubmit,
+  }
+
   render() {
     return (
       <Widget
-        title="Bienvenido"
-        subtitle="Asistente virtual"
-        senderPlaceHolder="Escribe aquí ..."
-        handleNewUserMessage={this.handleNewUserMessage}
-        handleQuickButtonClicked={this.handleQuickButtonClicked}
-        imagePreview
-        handleSubmit={this.handleSubmit}
-        emojis
+        {...this.widgetProps as any}
       />
     );
   }
